@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 
 // PORT=2000 node listener.js | pm2 start app.js --watch
 //var port = process.env.PORT || 3000;
-var port = 80;
+var port = 3000;
 
 // allow from cross domain ajax
 var methodOverride = require('method-override');
@@ -19,12 +19,14 @@ var allowCrossDomain = function(req, res, next) {
     ('OPTIONS' == req.method) ? res.sendStatus(200) : next();
 };
 app.use(allowCrossDomain);
+app.use(express.static(__dirname + '/assets'));
 
 // global object
 global.logger = require('./util/logger').Logger;
 global.curl = require('./util/mycurl');
 global.string = require('./util/string');
 global.request = require('request');
+global.path    = require("path");
 
 app.use(bodyParser.json());
 
