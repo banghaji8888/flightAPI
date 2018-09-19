@@ -42,7 +42,7 @@
                         <div class="form-group">
                             <label for="date">Tanggal</label>
                             <div class="input-group date" data-provide="datepicker">
-                                <input type="text" class="form-control" id="date">
+                                <input type="text" class="height29 form-control" id="date">
                                 <div class="input-group-addon">
                                     <span class="glyphicon glyphicon-th"></span>
                                 </div>
@@ -53,7 +53,7 @@
                         <div class="input-group">
                             <div class="form-group">
                                 <label for="depart">Adult</label>
-                                <select type="text" class="form-control" id="adult">
+                                <select type="text" class="height29 form-control" id="adult">
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -62,7 +62,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="child">Child</label>
-                                <select type="text" class="form-control" id="child">
+                                <select type="text" class="height29 form-control" id="child">
                                     <option value="0">0</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -72,7 +72,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="infant">Infant</label>
-                                <select type="text" class="form-control" id="infant">
+                                <select type="text" class="height29 form-control" id="infant">
                                     <option value="0">0</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -88,8 +88,8 @@
         </header>
 
         <!-- Page Features -->
-        <div class="row text-center">
-
+        <div class="pad30 text-center" id="result">
+            
 
 
 
@@ -113,7 +113,13 @@
     <script src="datepicker/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script>
+        function progress(){
+            return '<div class="progress">'+
+                '<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div></div>';
+        }
+
         $("#cari").click(function () {
+            $("#result").html(progress());
             $(this).prop('disabled', true);
             var _date = $("#date").val().split("/");
             var date = _date[2] + "-" + _date[0] + "-" + _date[1];
@@ -135,7 +141,34 @@
                 contentType: 'application/json',
                 success: function (data, textStatus, jQxhr) {
                     $(this).prop('disabled', false);
-                    console.log(data);
+                    var html = '<table class="table">';
+                    html += '<thead class="thead-dark"><tr><th scope="col">Maskapai</th><th scope="col">Berangkat</th><th scope="col">Tiba</th><th scope="col">Durasi/Transit</th><th scope="col">Harga</th></tr></thead><tbody>';
+                        
+                    for(var i = 0; i < data.length; i++){
+                        var flight = data[i];
+                        var detailTitle = flight['detailTitle'][0];
+                        var j = flight['detailTitle'].length - 1;
+                        var timeArrival = flight['detailTitle'][j]['arrival'];
+                        var penerbangan = (flight['isTransit']) ? 'Transit' : 'Langsung';
+                        var price = flight['classes'][0][0]['price'];
+                        var priceButton;
+                        if(price == 0){
+                            priceButton = '<button type="button" class="btn btn-primary">Cek Harga</button>';
+                        }else{
+                            priceButton = 'Rp '+price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")+'<br/><button type="button" class="btn btn-success">Pesan Sekarang</button>'
+                        }
+
+                        html += '<tr>';
+                            html += '<td><img src="'+detailTitle['flightIcon']+'" /><br/>'+detailTitle['flightName']+'<br/>'+detailTitle['flightCode']+'</td>';
+                            html += '<td>'+detailTitle['depart']+'<br/>'+detailTitle['originName']+' ('+detailTitle['origin']+')</td>';
+                            html += '<td>'+timeArrival+'<br/>'+detailTitle['destinationName']+' ('+detailTitle['destination']+')</td>';
+                            html += '<td>'+detailTitle['durationDetail']+'<br/>'+penerbangan+'</td>';
+                            html += '<td>'+priceButton+'</td>';
+                        html += '</tr>';
+                    }
+
+                    html += '</tbody></table>';
+                    $("#result").html(html);
                 },
                 error: function (jqXhr, textStatus, errorThrown) {
                     $(this).prop('disabled', false);
