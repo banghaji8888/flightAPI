@@ -88,12 +88,7 @@
         </header>
 
         <!-- Page Features -->
-        <div class="pad30 text-center" id="result">
-            
-
-
-
-        </div>
+        <div class="pad30 text-center" id="result"></div>
         <!-- /.row -->
 
     </div>
@@ -116,6 +111,46 @@
         function progress(){
             return '<div class="progress">'+
                 '<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div></div>';
+        }
+
+        function cekHarga(i,airlineCode){
+            var h_seats = $("#h_seats"+i).text();
+
+            $("#empty"+i).html(progress());
+            var _date = $("#date").val().split("/");
+            var date = _date[2] + "-" + _date[0] + "-" + _date[1];
+            var params = {
+                airline: airlineCode,
+                departure: $("#depart").val(),
+                arrival: $("#arrival").val(),
+                departureDate: date,
+                adult: $("#adult").val(),
+                child: $("#child").val(),
+                infant: $("#infant").val(),
+                seats : JSON.parse(h_seats)
+            };
+            
+            $.ajax({
+                url: 'http://localhost:3000/fare',
+                type: 'POST',
+                data: JSON.stringify(params),
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (data, textStatus, jQxhr) {
+                    var rc = data['rc'];
+                    if(rc == "00"){
+                        var priceButton = 'Rp '+data['data']['price'].toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")+'<br/><button type="button" class="btn btn-success">Pesan Sekarang</button>';
+                        $("#empty"+i).html(priceButton);
+                    }else{
+                        $("#empty"+i).html("Rp 0");
+                    }
+                },
+                error: function (jqXhr, textStatus, errorThrown) {
+                    $("#empty"+i).html("Rp 0");
+                    console.log(errorThrown);
+                }
+            });
+
         }
 
         $("#cari").click(function () {
@@ -151,11 +186,17 @@
                         var timeArrival = flight['detailTitle'][j]['arrival'];
                         var penerbangan = (flight['isTransit']) ? 'Transit' : 'Langsung';
                         var price = flight['classes'][0][0]['price'];
+                        var airlineCode = flight['airlineCode'];
+                        var seats = [];
+                        for(var h = 0; h < flight['classes'].length; h++){
+                            seats.push(flight['classes'][h][0]['seat']);
+                        }
+
                         var priceButton;
                         if(price == 0){
-                            priceButton = '<button type="button" class="btn btn-primary">Cek Harga</button>';
+                            priceButton = '<div id="empty'+i+'"><span id="h_seats'+i+'" style="display:none">'+JSON.stringify(seats)+'</span><span id="harga'+i+'"></span><button type="button" class="btn btn-primary" onclick="cekHarga('+i+',\''+airlineCode+'\')" id="b_harga'+i+'">Cek Harga</button></div>';
                         }else{
-                            priceButton = 'Rp '+price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")+'<br/><button type="button" class="btn btn-success">Pesan Sekarang</button>'
+                            priceButton = 'Rp '+price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")+'<br/><button type="button" class="btn btn-success">Pesan Sekarang</button>';
                         }
 
                         html += '<tr>';

@@ -10,6 +10,19 @@ exports.airport = function(req,res){
     }
 }
 
+exports.fare = function(req,res){
+    try{
+       let params = string.getFareParam(req.body);
+       let url = string.getUrl("fare");
+       curl.post(url,params,function(response){
+            res.send(response);
+       });
+    }catch(e){
+        logger.error(e);
+        res.json(string.response("99","general_error"));
+    }
+}
+
 exports.search = function(req,res){
     try{
         var maskapai = ["TPJT","TPGA","TPQG","TPSJ"];
@@ -26,6 +39,8 @@ exports.search = function(req,res){
             .then(values => {
                 var response = [];
                 for(let val of values){
+                    if(val == "undefined" || val == null || val == "") continue;
+
                     var flights = JSON.parse(val);
                     for(let flight of flights['data']){
                         response.push(flight);

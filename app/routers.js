@@ -6,6 +6,7 @@ module.exports = function(app){
 
     app.get('/airport',api.airport);
     app.post('/search',api.search);
+    app.post('/fare',api.fare);
 
     app.get('/home',web.home);
 

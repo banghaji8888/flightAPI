@@ -1,7 +1,7 @@
 'use strict';
 var token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImp0aSI6IjhkNzNtbmc4OWVkIn0.eyJpc3MiOiJodHRwOlwvXC9hcGkuZmFzdHJhdmVsLmNvLmlkIiwiYXVkIjoiRmFzdHJhdmVsQjJCIENsaWVudCIsImp0aSI6IjhkNzNtbmc4OWVkIiwiaWF0IjoxNTM2NTgzNzgwLCJuYmYiOjE1MzY1ODM4NDAsImV4cCI6MTUzNjU4NzM4MCwib3V0bGV0SWQiOiJGVDQ2NDg5IiwicGluIjoiMjMwNTA5Iiwia2V5IjoiMDgyMzkyIn0.DkakYRidtXY0bZBl3rG1oewSN19_KbFCeysE9oHquAE";
 
-var base_url = "https://api-dev.fastravel.co.id/flight/";
+var base_url = "https://api.fastravel.co.id/flight/";
 
 var RD = {
     success: "Success",
@@ -35,6 +35,23 @@ exports.getSearchParam = function(data,airline){
         adult : data.adult,
         child : data.child,
         infant : data.infant,
+        token : token
+    };
+
+    return params;
+}
+
+exports.getFareParam = function(data){
+    var params = {
+        airline : data.airline,
+        departure : data.departure,
+        arrival : data.arrival,
+        departureDate : data.departureDate,
+        returnDate : data.departureDate,
+        adult : data.adult,
+        child : data.child,
+        infant : data.infant,
+        seats : data.seats,
         token : token
     };
 
