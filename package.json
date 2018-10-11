@@ -4,7 +4,8 @@
   "description": "Cariba V2",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "pm2 start --watch",
+    "stop": "pm2 stop 0 --watch"
   },
   "author": "bang haji",
   "license": "ISC",

@@ -22,10 +22,11 @@ exports.seacrh_promise = function(url,method,params){
                     body: params,
                     json: true
                 };
-                //console.log("params: "+JSON.stringify(options));
+
+                logger.info("PARAMS: "+JSON.stringify(options));
                 request(options, function(err, res, body) { 
                     var resp = JSON.stringify(body);
-                    //logger.info("response: "+resp);
+                    logger.info("RESPONSE ["+url+"]: "+resp);
                     resolve(resp);
                 });
             }catch(e){

@@ -1,17 +1,10 @@
 'use strict';
 var helper = require('../util/helper');
 
-exports.airport = function(req,res){
-    try{
-        
-    }catch(e){
-        logger.error(e);
-        res.json(string.response("99","general_error"));
-    }
-}
-
 exports.fare = function(req,res){
     try{
+        logger.info("Fare....");
+
        let params = string.getFareParam(req.body);
        let url = string.getUrl("fare");
        curl.post(url,params,function(response){
@@ -25,6 +18,7 @@ exports.fare = function(req,res){
 
 exports.search = function(req,res){
     try{
+        logger.info("Search....");
         var maskapai = ["TPJT","TPGA","TPQG","TPSJ"];
         var promiseMaskapai = [];
         

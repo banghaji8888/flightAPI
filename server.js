@@ -22,11 +22,11 @@ app.use(allowCrossDomain);
 app.use(express.static(__dirname + '/assets'));
 
 // global object
-global.logger = require('./util/logger').Logger;
 global.curl = require('./util/mycurl');
 global.string = require('./util/string');
 global.request = require('request');
 global.path    = require("path");
+global.logger   = require("./util/logger").Logger;
 
 app.use(bodyParser.json());
 
@@ -37,4 +37,4 @@ app.use(function (err, req, res, next) {
 
 require('./app/routers')(app);
 
-app.listen(port, () => console.log('Elastic API listening on port '+port));
+app.listen(port, () => console.log('Flight API listening on port '+port));
