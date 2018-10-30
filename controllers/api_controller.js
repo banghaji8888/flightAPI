@@ -37,12 +37,13 @@ exports.search = function(req,res){
 
                     var flights = JSON.parse(val);
                     if(flights['rc'] != "00") continue;
-                    
+
                     for(let flight of flights['data']){
                         response.push(flight);
                     }
                 }
 
+                response = [];
                 if(response.length == 0){
                     response = string.response("88","empty")
                 }
