@@ -37,6 +37,7 @@ exports.search = function(req,res){
                     if(val == "undefined" || val == null || val == "") continue;
 
                     var flights = JSON.parse(val);
+                    if(flights['rc'] != "00") continue;
                     for(let flight of flights['data']){
                         response.push(flight);
                     }
