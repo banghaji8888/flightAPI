@@ -33,6 +33,7 @@ exports.search = function(req,res){
             .then(values => {
                 var response = [];
                 for(let val of values){
+                    console.log(val)
                     if(val == "undefined" || val == null || val == "") continue;
 
                     var flights = JSON.parse(val);
@@ -41,6 +42,9 @@ exports.search = function(req,res){
                     }
                 }
 
+                if(response.length == 0){
+                    response = string.response("88","empty")
+                }
                 res.json(response);
             })
             .catch(e => {

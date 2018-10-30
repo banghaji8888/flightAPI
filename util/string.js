@@ -8,7 +8,8 @@ var RD = {
     failed: "Failed",
     general_error: "General error",
     keywords_offset: "Keywords tidak boleh lebih dari 5 produk!",
-    not_found: "Produk tidak ditemukan"
+    not_found: "Produk tidak ditemukan",
+    empty: "Penerbangan tidak tersedia."
 };
 
 exports.response = function(rc,rd){
