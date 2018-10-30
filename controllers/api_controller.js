@@ -33,11 +33,11 @@ exports.search = function(req,res){
             .then(values => {
                 var response = [];
                 for(let val of values){
-                    console.log("ini: "+val)
                     if(val == "undefined" || val == null || val == "") continue;
 
                     var flights = JSON.parse(val);
                     if(flights['rc'] != "00") continue;
+                    
                     for(let flight of flights['data']){
                         response.push(flight);
                     }
