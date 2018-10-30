@@ -33,7 +33,7 @@ exports.search = function(req,res){
             .then(values => {
                 var response = [];
                 for(let val of values){
-                    console.log(val)
+                    console.log("ini: "+val)
                     if(val == "undefined" || val == null || val == "") continue;
 
                     var flights = JSON.parse(val);
