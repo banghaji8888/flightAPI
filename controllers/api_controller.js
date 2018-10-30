@@ -43,7 +43,6 @@ exports.search = function(req,res){
                     }
                 }
 
-                response = [];
                 if(response.length == 0){
                     response = string.response("88","empty")
                 }
