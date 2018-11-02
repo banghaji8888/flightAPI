@@ -56,3 +56,21 @@ exports.search = function(req,res){
         res.json(string.response("99","general_error"));
     }
 }
+
+exports.search2 = function(req,res){
+    try{
+        logger.info("Search2....");
+
+        if(req.body.airline == "") res.json(string.response("50","empty_aiirline"));
+        if(req.body.departureDate == "") res.json(string.response("51","empty_date"));
+
+        let url = string.getUrl("search");
+        let params = string.getSearchParam2(req.body);
+        curl.post(url,params,function(response){
+            res.send(response);
+        });
+    }catch(e){
+        logger.error(e);
+        res.json(string.response("99","general_error"));
+    }
+}
