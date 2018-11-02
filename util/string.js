@@ -4,12 +4,14 @@ var token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImp0aSI6IjhkNzNtbmc4OWVkIn0.eyJ
 var base_url = "https://api.fastravel.co.id/flight/";
 
 var RD = {
-    success: "Success",
-    failed: "Failed",
-    general_error: "General error",
+    success: "Success.",
+    failed: "Failed.",
+    general_error: "General error.",
     keywords_offset: "Keywords tidak boleh lebih dari 5 produk!",
-    not_found: "Produk tidak ditemukan",
-    empty: "Penerbangan tidak tersedia."
+    not_found: "Produk tidak ditemukan.",
+    empty: "Penerbangan tidak tersedia.",
+    empty_aiirline: "airline tidak boleh kosong.",
+    empty_date: "tanggal penerbangan tidak boleh kosong."
 };
 
 exports.response = function(rc,rd){
@@ -28,6 +30,23 @@ exports.getUrl = function(path){
 exports.getSearchParam = function(data,airline){
     var params = {
         airline : airline,
+        departure : data.departure,
+        arrival : data.arrival,
+        departureDate : data.departureDate,
+        returnDate : data.departureDate,
+        isLowestPrice : data.isLowestPrice,
+        adult : data.adult,
+        child : data.child,
+        infant : data.infant,
+        token : token
+    };
+
+    return params;
+}
+
+exports.getSearchParam2 = function(data){
+    var params = {
+        airline : data.airline,
         departure : data.departure,
         arrival : data.arrival,
         departureDate : data.departureDate,
